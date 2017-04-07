@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.nodedatadetails.dao.NodeDataDetailsDao">
+
+    <sql id="nodeDataDetailsColumns">
+		a.id AS "id",
+		a.node_mac AS "nodeMac",
+		a.node_type_id AS "nodeTypeId",
+		a.air_temperature AS "airTemperature",
+		a.air_humidity AS "airHumidity",
+		a.soil_temperature1 AS "soilTemperature1",
+		a.soil_humidity1 AS "soilHumidity1",
+		a.soil_temperature2 AS "soilTemperature2",
+		a.soil_humidity2 AS "soilHumidity2",
+		a.soil_temperature3 AS "soilTemperature3",
+		a.soil_humidity3 AS "soilHumidity3",
+		a.co2 AS "co2",
+		a.open_flag AS "openFlag",
+		a.power AS "power",
+		a.frequency_point AS "frequencyPoint",
+		a.power_supply AS "powerSupply",
+		a.add_time AS "addTime",
+		a.add_user_id AS "addUserId",
+		a.update_time AS "updateTime",
+		a.update_user_id AS "updateUserId"
+	</sql>
+
+    <sql id="nodeDataDetailsJoins">
+    </sql>
+
+    <select id="get" resultType="NodeDataDetails">
+        SELECT
+        <include refid="nodeDataDetailsColumns"/>
+        FROM jc_node_data_details a
+        <include refid="nodeDataDetailsJoins"/>
+        WHERE a.id = #{id}
+    </select>
+
+    <select id="findList" resultType="NodeDataDetails">
+        SELECT
+        <include refid="nodeDataDetailsColumns"/>
+        FROM jc_node_data_details a
+        <include refid="nodeDataDetailsJoins"/>
+        <where>
+            1=1
+            <if test="nodeMac != null and nodeMac != ''">
+                AND a.node_mac = #{nodeMac}
+            </if>
+            <if test="startTime!=null and startTime!=''">
+                AND a.add_time &gt; #{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                AND a.add_time &lt; #{endTime}
+            </if>
+        </where>
+        ORDER BY a.add_time DESC
+    </select>
+
+    <select id="findAllList" resultType="NodeDataDetails">
+        SELECT
+        <include refid="nodeDataDetailsColumns"/>
+        FROM jc_node_data_details a
+        <include refid="nodeDataDetailsJoins"/>
+        <where>
+            1=1
+            <if test="nodeMac != null and nodeMac != ''">
+                AND a.node_mac = #{nodeMac}
+            </if>
+        </where>
+        ORDER BY a.add_time DESC
+    </select>
+    <select id="fetchLastData" resultType="NodeDataDetails">
+        SELECT * FROM
+       	   (
+        SELECT
+        	<include refid="nodeDataDetailsColumns"/>
+        FROM
+			jc_node_data_details a
+        where
+			a.node_mac=#{nodeMac}
+        ORDER BY
+			a.add_time
+        DESC
+			LIMIT 10
+			) b
+        ORDER BY
+       	 b.addTime
+		ASC
+    </select>
+
+    <insert id="insert">
+		INSERT INTO jc_node_data_details(
+			node_mac,
+			node_type_id,
+			air_temperature,
+			air_humidity,
+			soil_temperature1,
+			soil_humidity1,
+			soil_temperature2,
+			soil_humidity2,
+			soil_temperature3,
+			soil_humidity3,
+			co2,
+			open_flag,
+			power,
+			frequency_point,
+			power_supply,
+			add_time
+		) VALUES (
+			#{nodeMac},
+			#{nodeTypeId},
+			#{airTemperature},
+			#{airHumidity},
+			#{soilTemperature1},
+			#{soilHumidity1},
+			#{soilTemperature2},
+			#{soilHumidity2},
+			#{soilTemperature3},
+			#{soilHumidity3},
+			#{co2},
+			#{openFlag},
+			#{power},
+			#{frequencyPoint},
+			#{powerSupply},
+			#{addTime}
+		)
+	</insert>
+
+    <update id="delete">
+		DELETE FROM jc_node_data_details
+		WHERE id = #{id}
+	</update>
+
+</mapper>

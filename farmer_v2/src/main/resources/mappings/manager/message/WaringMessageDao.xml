@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.message.dao.WaringMessageDao">
+    
+	<sql id="waringMessageColumns">
+		a.id AS "id",
+		a.node_num AS "nodeNum",
+		a.message AS "message",
+		a.create_date AS "createDate",
+		a.create_by AS "createBy.id",
+		a.update_date AS "updateDate",
+		a.update_by AS "updateBy.id"
+	</sql>
+	
+	<sql id="waringMessageJoins">
+	</sql>
+    
+	<select id="get" resultType="WaringMessage">
+		SELECT 
+			<include refid="waringMessageColumns"/>
+		FROM jc_waring_message a
+		<include refid="waringMessageJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WaringMessage">
+		SELECT 
+			<include refid="waringMessageColumns"/>
+		FROM jc_waring_message a
+		<include refid="waringMessageJoins"/>
+		<where>
+			
+			<if test="nodeNum != null and nodeNum != ''">
+				AND a.node_num = #{nodeNum}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="WaringMessage">
+		SELECT 
+			<include refid="waringMessageColumns"/>
+		FROM jc_waring_message a
+		<include refid="waringMessageJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_waring_message(
+			node_num,
+			message,
+			create_date
+		) VALUES (
+			#{nodeNum},
+			#{message},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_waring_message SET 	
+			node_num = #{nodeNum},
+			message = #{message},
+			update_date=#{updateDate}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jc_waring_message
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

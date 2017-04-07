@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.farmer.dao.FarmerDao">
+    
+	<sql id="farmerColumns">
+		a.id AS "id",
+		a.farmer_num AS "farmerNum",
+		a.name AS "name",
+		a.area AS "area",
+		a.plant_variety AS "plantVariety",
+		a.user_id AS "user.id",
+		a.used_id AS "usedId",
+		a.order_num AS "orderNum",
+		a.use_flag AS "useFlag",
+		a.del_flag AS "delFlag",
+		a.remarks AS "remarks",
+		a.add_time AS "addTime",
+		a.add_user_id AS "addUserId",
+		a.update_time AS "updateTime",
+		a.update_user_id AS "updateUserId",
+		u6.name AS "user.name",
+		u.name AS "usedName",
+		a.addr AS "addr"
+	</sql>
+	
+	<sql id="farmerJoins">
+		LEFT JOIN sys_user u6 ON u6.id = a.user_id
+		LEFT JOIN sys_user u ON u.id = a.used_id
+	</sql>
+    
+	<select id="get" resultType="Farmer">
+		SELECT 
+			<include refid="farmerColumns"/>
+		FROM jc_farmer a
+		<include refid="farmerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Farmer">
+		SELECT 
+			<include refid="farmerColumns"/>
+		FROM jc_farmer a
+		<include refid="farmerJoins"/>
+		<where>
+			a.del_flag = 1
+			<if test="farmerNum != null and farmerNum != ''">
+				AND a.farmer_num LIKE 
+					<if test="dbName == 'oracle'">'%'||#{farmerNum}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{farmerNum}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{farmerNum},'%')</if>
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="useFlag!= null and useFlag!= ''">
+				AND a.use_flag = #{useFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Farmer">
+		SELECT 
+			<include refid="farmerColumns"/>
+		FROM jc_farmer a
+		<include refid="farmerJoins"/>
+		<where>
+			a.del_flag = 1
+			and a.use_flag=1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_farmer(
+			farmer_num,
+			name,
+			area,
+			plant_variety,
+			user_id,
+			remarks,
+			add_time,
+			add_user_id,
+			update_time,
+			update_user_id,
+			used_id,
+			addr
+		) VALUES (
+			#{farmerNum},
+			#{name},
+			#{area},
+			#{plantVariety},
+			#{user.id},
+			#{remarks},
+			#{addTime},
+			#{addUserId},
+			#{updateTime},
+			#{updateUserId},
+			#{usedId},
+			#{addr}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_farmer SET 	
+			farmer_num = #{farmerNum},
+			name = #{name},
+			area = #{area},
+			plant_variety = #{plantVariety},
+			user_id = #{user.id},
+			used_id=#{usedId},
+			order_num = #{orderNum},
+			use_flag = #{useFlag},
+			del_flag = #{delFlag},
+			add_time = #{addTime},
+			add_user_id = #{addUserId},
+			update_time = #{updateTime},
+			addr=#{addr},
+			remarks=#{remarks},
+			update_user_id = #{updateUserId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE jc_farmer SET 
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

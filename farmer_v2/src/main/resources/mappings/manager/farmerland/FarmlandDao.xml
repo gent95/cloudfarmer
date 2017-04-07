@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.farmerland.dao.FarmlandDao">
+    
+	<sql id="farmlandColumns">
+		a.id AS "id",
+		a.farmland_num AS "farmlandNum",
+		a.alias AS "alias",
+		a.land_type AS "landType",
+		a.plant_variety AS "plantVaritety",
+		a.user_id AS "user.id",
+		a.used_id AS "usedId",
+		u.name AS "usedName",
+		a.assigne_time AS "assigneTime",
+		a.farmer_id AS "farmer.id",
+		f.name AS "farmer.name",
+		a.area AS "area",
+		a.addr AS "addr",
+		a.realy_id AS "relay.id",
+		a.order_num AS "orderNum",
+		a.use_flag AS "useFlag",
+		a.del_flag AS "delFlag",
+		a.add_user_id AS "addUserId",
+		a.add_time AS "addTime",
+		a.update_user_id AS "updateUserId",
+		a.update_time AS "updateTime",
+		a.remarks AS "remarks",
+		u6.name AS "user.name",
+		r.relay_num AS "relay.relayNum"
+	</sql>
+	
+	<sql id="farmlandJoins">
+		LEFT JOIN sys_user u6 ON u6.id = a.user_id
+		LEFT JOIN sys_user u ON u.id = a.used_id
+		LEFT  JOIN jc_farmer f on f.id=a.farmer_id
+		LEFT  JOIN  jc_relay r on r.id=a.realy_id
+	</sql>
+    
+	<select id="get" resultType="Farmland">
+		SELECT 
+			<include refid="farmlandColumns"/>
+		FROM jc_farmland a
+		<include refid="farmlandJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="findFarmerlandNumByFarmerId" resultType="java.lang.Integer">
+		select
+		COUNT(*)
+		from jc_farmland a
+		LEFT JOIN jc_farmer f on f.id=a.farmer_id
+		<where>
+			a.del_flag =1 AND a.farmer_id=#{farmer.id}
+		</where>
+	</select>
+	<select id="findList" resultType="Farmland">
+		SELECT 
+			<include refid="farmlandColumns"/>
+		FROM jc_farmland a
+		<include refid="farmlandJoins"/>
+		<where>
+			a.del_flag =1
+			<if test="farmlandNum != null and farmlandNum != ''">
+				AND a.farmland_num LIKE
+				<if test="dbName == 'oracle'">'%'||#{farmlandNum}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{farmlandNum}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{farmlandNum},'%')</if>
+				#{farmlandNum}
+			</if>
+			<if test="plantVaritety!= null and plantVaritety!= ''">
+				AND a.plant_variety LIKE
+				<if test="dbName == 'oracle'">'%'||#{plantVaritety}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{plantVaritety}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{plantVaritety},'%')</if>
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="usedId != null and  usedId != ''">
+				AND a.used_id = #{usedId}
+			</if>
+			<if test="farmer != null and farmer.id != '' and farmer.id!=null">
+				AND  a.farmer_id=#{farmer.id}
+			</if>
+			<if test="farmer != null and farmer.name != '' and farmer.name!=null">
+				AND f.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{farmer.name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{farmer.name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{farmer.name},'%')</if>
+			</if>
+			<if test="usedName != null and usedName != ''">
+				AND u.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{usedName}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{usedName}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{usedName},'%')</if>
+			</if>
+			<if test="useFlag!= null and useFlag!= ''">
+				AND a.use_flag = #{useFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Farmland">
+		SELECT 
+			<include refid="farmlandColumns"/>
+		FROM jc_farmland a
+		<include refid="farmlandJoins"/>
+		<where>
+			a.del_flag = 1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_farmland(
+		farmland_num,
+		alias,
+		land_type,
+		plant_variety,
+		user_id,
+		used_id,
+		assigne_time,
+		farmer_id,
+		area,
+		addr,
+		order_num,
+		use_flag,
+		del_flag,
+		add_user_id,
+		add_time,
+		update_user_id ,
+		update_time ,
+		remarks
+		) VALUES (
+			#{farmlandNum},
+			#{alias},
+			#{landType},
+			#{plantVaritety},
+			#{user.id},
+			#{usedId},
+			#{assigneTime},
+			#{farmer.id},
+			#{area},
+			#{addr},
+			#{orderNum},
+			#{useFlag},
+			#{delFlag},
+			#{addUserId},
+			#{addTime},
+			#{updateUserId},
+			#{updateTime},
+			#{remarks}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_farmland SET 	
+		farmland_num=#{farmlandNum},
+		alias=#{alias},
+		land_type =#{landType},
+		plant_variety=#{plantVaritety},
+		user_id =#{user.id},
+		used_id=#{usedId},
+		assigne_time=#{assigneTime},
+		farmer_id =#{farmer.id},
+		area=#{area},
+		addr=#{addr},
+		realy_id =#{relay.id},
+		order_num =#{orderNum},
+		use_flag=#{useFlag},
+		del_flag =#{delFlag},
+		add_user_id =#{addUserId},
+		add_time =#{addTime},
+		update_user_id =#{updateUserId},
+		update_time = #{updateTime},
+		remarks =#{remarks}
+		WHERE id = #{id}
+	</update>
+		<update id="updateFarmland">
+			UPDATE jc_farmland SET
+		farmland_num=#{farmlandNum},
+		alias=#{alias},
+		land_type =#{landType},
+		plant_variety=#{plantVaritety},
+		user_id =#{user.id},
+		used_id=#{usedId},
+		assigne_time=#{assigneTime},
+		area=#{area},
+		addr=#{addr},
+		realy_id =#{relay.id},
+		order_num =#{orderNum},
+		use_flag=#{useFlag},
+		del_flag =#{delFlag},
+		add_user_id =#{addUserId},
+		add_time =#{addTime},
+		update_user_id =#{updateUserId},
+		update_time = #{updateTime},
+		remarks =#{remarks}
+		WHERE id = #{id}
+		</update>
+	<update id="updateById">
+		UPDATE jc_farmland SET
+		farmer_id =#{farmer.id},
+		realy_id =#{relay.id}
+		WHERE id = #{id}
+	</update>
+
+	<update id="delete">
+		UPDATE jc_farmland SET 
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

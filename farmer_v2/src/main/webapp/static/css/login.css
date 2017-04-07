@@ -1,0 +1,253 @@
+@font-face {
+	font-family: pingfang-regular;
+	src: url('/static/font/pingfangregular.otf');
+}
+.body{
+	background: url(/static/images/login/juxing-1.png);
+	color: #FFFFFF;
+	margin: 0px;
+	padding: 0px;
+	font-family: pingfang-regular;
+}
+a{
+	text-decoration: none;
+	color: #FFFFFF;
+}
+.header{
+	background: url(/static/images/login/juxing-2.png);
+	height: 75px;
+}
+.he_left{
+	margin-left: 10%;
+	width: 485px;
+	float: left;
+	margin-top: 0.5%;
+}
+.he_rigth{
+	float: right;
+	margin-right: 5%;
+	margin-top: 1%;
+}
+.content{
+	width: 555px;
+	height: 353px;
+	background: url(/static/images/login/yuanjiao-1.png);
+	margin: 0 auto;
+}
+.cont{
+	width: 555px;
+	height:669px;
+	background: url(/static/images/register/back-1.png);
+	margin: 0 auto;
+	margin-top: 4%;
+	border-radius:20px;
+}
+.cont .form-signin{
+	padding-top:4%;
+	padding-left: 13%;
+	padding-right: 14%;
+}
+.content .form-signin{
+	padding-top:7%;
+	padding-left: 10%;
+	padding-right: 10%;
+}
+.texts{
+	font-size: 34.34px;
+	height: 30px;
+	margin-bottom: 1%;
+}
+.texts2{
+	font-size: 34.34px;
+	height: 30px;
+	margin-left: -10%;
+	margin-bottom: 15%;
+}
+.username1{
+	height: 70px;
+	border-bottom: 2px solid #FFFFFF;
+}
+.username1 img{
+	margin-top: 30px;
+}
+.password1{
+	height: 70px;
+	border-bottom: 2px solid #FFFFFF;
+}
+.password1 img{
+	margin-top: 30px;
+}
+.input{
+	border:0px;
+	background:rgba(0, 0, 0, 0);
+	font-size: 30px;
+	height: 39px;
+	width: 92%;
+	color: #ffffff;
+	font-size:20px;
+}
+.input:focus {
+	border: 0px;
+	border-color: rgba(0, 0, 0, 0);
+}
+.jizhu{
+	font-size: 14.33px;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+.jizhu a{
+	font-size: 14.33px;
+	font-family: pingfang-regular;
+}
+.jizhu .oneo{
+	margin-left: 1%;
+	margin-right: 65%;
+}
+.btn{
+	margin-top: 6%;
+	margin: 0 auto;
+	background: url(/static/images/login/yuanjiao-3.png);
+	height: 41px;
+	width: 191px;
+	text-align: center;
+	border: 0px;
+	font-size: 20.45px;
+	color: #FFFFFF;
+	margin-left: 25%;
+}
+.footer{
+	text-align: center;
+	font-size: 12px;
+	margin-top: 10.5%;
+}
+.wenjian{
+	text-align: right;
+	margin-top:-1.5%;
+	margin-right: 5%;
+}
+.wenjian a{
+	margin-right:1%;
+}
+.required{
+	border-radius:6px;
+	border:1px solid #FFFFFF;
+	background:rgba(0, 0, 0, 0);
+	height: 29px;
+	width: 270px;
+	color: #FFFFFF;
+	font-size: 16px;
+}
+.email{
+	border-radius:6px;
+	border:1px solid #FFFFFF;
+	background:rgba(0, 0, 0, 0);
+	height: 29px;
+	width: 270px;
+	margin-right: 3%;
+	color: #FFFFFF;
+	font-size: 16px;
+}
+.reda{
+	font-size: 16px;
+	font-family: pingfang-regular;
+	text-align: right;
+	margin-bottom: 8%;
+}
+.regis{
+	background: url(/static/images/login/yuanjiao-3.png);
+	height: 41px;
+	width: 191px;
+	text-align: center;
+	margin-left: 30%;
+	margin-top: 10%;
+	font-size: 20.45px;
+	border: 0px;
+	color: #FFFFFF;
+}
+.gain{
+	/*background: url(/static/images/login/yuanjiao-3.png);*/
+	background:rgba(0, 0, 0, 0);
+	height: 41px;
+	width: 151px;
+	text-align: center;
+	margin-left: 5%;
+	margin-top: 3%;
+	margin-right: 5%;
+	font-size: 20.45px;
+	color: #FFFFFF;
+	border: 1px solid #ffffff;
+	border-radius: 6px;
+}
+.footer2{
+	text-align: center;
+	font-size: 12px;
+	margin-top: 3%;
+}
+.header2{height:80px;
+	margin-top:1%;
+	text-align: center;}
+.alert{position:relative;
+	width:300px;
+	margin:0 auto;
+	*padding-bottom:0px;}
+.header2{
+	margin-top: 9%;
+	height:80px;
+	margin-bottom: -1%;
+	text-align: center;
+}
+.alert{
+	position:relative;
+	width:300px;
+	margin:0 auto;
+	*padding-bottom:0px;
+}
+.error{
+	background:none;
+	width:270px;
+	font-weight:normal;
+	color:inherit;
+	margin:0;
+}
+.contPassword{
+	width: 555px;
+	height: 369px;
+	background: url(/static/images/register/back-1.png);
+	margin: 0 auto;
+	margin-top: 11%;
+	border-radius:20px;
+}
+.inputs1{
+	border-radius:6px;
+	border:1px solid #FFFFFF;
+	background:rgba(0, 0, 0, 0);
+	height: 31px;
+	width: 110px;
+	color: #FFFFFF;
+	font-size: 16px;
+}
+.contPassword .form-signin{
+	padding-top:5%;
+	padding-left: 15%;
+	padding-right: 18%;
+}
+.footer3{
+	text-align: center;
+	font-size: 11px;
+	margin-top: 12%;
+}
+.officeName{
+	height: 29px;
+	width: 270px;
+	background-color: rgba(0,0,0,0);
+	color: #ffffff;
+	font-size: 16px;
+	border-radius: 8px;
+	text-align: center;
+}
+.officeName option{
+	background-color: rgba(0,0,0,0.40);
+}
+select{
+	background-color: rgba(0,0,0,0);
+}

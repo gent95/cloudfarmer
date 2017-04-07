@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.node.dao.NodeDao">
+    
+	<sql id="nodeColumns">
+		a.id AS "id",
+		a.node_num AS "nodeNum",
+		a.type AS "type",
+		a.user_id AS "user.id",
+		a.used_id AS "usedId",
+		u.name AS "usedName",
+		a.open_flag AS "openFlag",
+		a.degree AS "degree",
+		a.exception_flag AS "exceptionFlag",
+		a.warning_flag AS "warningFlag",
+		a.control_type AS "controlType",
+		a.relay_id AS "relayId",
+		r.relay_num AS "relayName",
+		a.cycle AS "cycle",
+		a.del_flag AS "delFlag",
+		a.add_user_id AS "addUserId",
+		a.add_time AS "addTime",
+		a.update_user_id AS "updateUserId",
+		a.update_time AS "updateTime",
+		u4.name AS "user.name",
+		a.farmland_id AS "farmlandId",
+		f.alias  AS "farmlandName",
+		a.hanging_device AS "hangingDevice"
+	</sql>
+	
+	<sql id="nodeJoins">
+		LEFT JOIN sys_user u4 ON u4.id = a.user_id
+		LEFT JOIN sys_user u ON u.id = a.used_id
+		LEFT  JOIN  jc_farmland f on f.id=a.farmland_id
+		LEFT  JOIN  jc_relay   r on r.id=a.relay_id
+	</sql>
+
+	<select id="get" resultType="Node">
+		SELECT
+			<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	<select id="getByNodeNum" resultType="Node">
+		SELECT
+		<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		WHERE a.node_num = #{nodeNum}
+	</select>
+
+	<select id="getByNodeMac" resultType="Node">
+		SELECT
+			<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		WHERE a.node_num = #{clintMac}
+	</select>
+
+	<select id="selectAllNodeByUserId" resultType="Node">
+		SELECT
+		a.node_num AS nodeNum
+		FROM
+		jc_relay b
+		JOIN jc_node a ON b.id = a.relay_id
+		WHERE
+		b.user_id = #{id}
+	</select>
+
+	<select id="getNodeNum" resultType="java.lang.Integer">
+		SELECT
+			COUNT(*)
+		FROM jc_node a
+		WHERE a.relay_id = #{relayId}
+		AND
+		a.del_flag =1
+	</select>
+	<select id="getNodeNumberByfarmlandId" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM jc_node a
+		WHERE a.farmland_id = #{farmlandId}
+		AND
+		a.del_flag =1
+	</select>
+	<select id="findList" resultType="Node">
+		SELECT 
+			<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		<where>
+			a.del_flag = 1
+			<if test="nodeNum != null and nodeNum != ''">
+				AND a.node_num = #{nodeNum}
+			</if>
+			<if test="usedId != null and usedId != ''">
+				AND a.used_id =#{usedId}
+			</if>
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="farmlandId != null and farmlandId != ''">
+				AND a.farmland_id =#{farmlandId}
+			</if>
+			<if test="relayId !=null and relayId !=''">
+				AND	a.relay_id =#{relayId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Node">
+		SELECT 
+			<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		<where>
+			a.del_flag = 1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	<select id="findAllByNum" resultType="Node">
+		SELECT
+		<include refid="nodeColumns"/>
+		FROM jc_node a
+		<include refid="nodeJoins"/>
+		<where>
+			a.del_flag = 1 AND a.node_num = #{nodeNum}
+		</where>
+	</select>
+	<insert id="insert">
+		INSERT INTO jc_node(
+			node_num,
+			type,
+			user_id,
+			used_id,
+			open_flag,
+			degree,
+			exception_flag,
+			warning_flag,
+			control_type,
+			relay_id,
+			cycle,
+			add_user_id,
+			add_time,
+			update_user_id,
+			update_time,
+			farmland_id,
+			hanging_device
+		) VALUES (
+			#{nodeNum},
+			#{type},
+			#{user.id},
+			#{usedId},
+			#{openFlag},
+			#{degree},
+			#{exceptionFlag},
+			#{warningFlag},
+			#{controlType},
+			#{relayId},
+			#{cycle},
+			#{addUserId},
+			#{addTime},
+			#{updateUserId},
+			#{updateTime},
+			#{farmlandId},
+			#{hangingDevice}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_node SET 	
+			node_num = #{nodeNum},
+			type = #{type},
+			user_id = #{user.id},
+			used_id = #{usedId},
+			open_flag = #{openFlag},
+			degree = #{degree},
+			exception_flag = #{exceptionFlag},
+			warning_flag = #{warningFlag},
+			control_type = #{controlType},
+			relay_id = #{relayId},
+			cycle = #{cycle},
+			add_user_id = #{addUserId},
+			add_time = #{addTime},
+			update_user_id = #{updateUserId},
+			update_time = #{updateTime},
+			hanging_device=#{hangingDevice},
+			farmland_id=#{farmlandId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE jc_node SET 
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

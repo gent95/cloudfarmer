@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.region.dao.RegionDao">
+    
+	<sql id="regionColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.parentid AS "parentid",
+		a.shortname AS "shortname",
+		a.leveltype AS "leveltype",
+		a.citycode AS "citycode",
+		a.zipcode AS "zipcode",
+		a.lng AS "lng",
+		a.lat AS "lat",
+		a.pinyin AS "pinyin",
+		a.status AS "status"
+	</sql>
+	
+	<sql id="regionJoins">
+	</sql>
+    
+	<select id="get" resultType="Region">
+		SELECT 
+			<include refid="regionColumns"/>
+		FROM jc_region a
+		<include refid="regionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="selectByName" resultType="Region">
+		SELECT
+		<include refid="regionColumns"/>
+		FROM jc_region a
+		WHERE a.name = #{name}
+	</select>
+
+	<select id="findList" resultType="Region">
+		SELECT 
+			<include refid="regionColumns"/>
+		FROM jc_region a
+		<include refid="regionJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="parentid != null and parentid != ''">
+				AND a.parentid = #{parentid}
+			</if>
+			<if test="shortname != null and shortname != ''">
+				AND a.shortname = #{shortname}
+			</if>
+			<if test="leveltype != null and leveltype != ''">
+				AND a.leveltype = #{leveltype}
+			</if>
+			<if test="citycode != null and citycode != ''">
+				AND a.citycode = #{citycode}
+			</if>
+			<if test="zipcode != null and zipcode != ''">
+				AND a.zipcode = #{zipcode}
+			</if>
+			<if test="lng != null and lng != ''">
+				AND a.lng = #{lng}
+			</if>
+			<if test="lat != null and lat != ''">
+				AND a.lat = #{lat}
+			</if>
+			<if test="pinyin != null and pinyin != ''">
+				AND a.pinyin = #{pinyin}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Region">
+		SELECT 
+			<include refid="regionColumns"/>
+		FROM jc_region a
+		<include refid="regionJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_region(
+			name,
+			parentid,
+			shortname,
+			leveltype,
+			citycode,
+			zipcode,
+			lng,
+			lat,
+			pinyin,
+			status
+		) VALUES (
+			#{name},
+			#{parentid},
+			#{shortname},
+			#{leveltype},
+			#{citycode},
+			#{zipcode},
+			#{lng},
+			#{lat},
+			#{pinyin},
+			#{status}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_region SET 	
+			name = #{name},
+			parentid = #{parentid},
+			shortname = #{shortname},
+			leveltype = #{leveltype},
+			citycode = #{citycode},
+			zipcode = #{zipcode},
+			lng = #{lng},
+			lat = #{lat},
+			pinyin = #{pinyin},
+			status = #{status}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jc_region
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

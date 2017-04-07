@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.timingstrategy.dao.NodeCollectionCycleDao">
+    
+	<sql id="nodeCollectionCycleColumns">
+		a.id AS "id",
+		a.node_id AS "nodeId",
+		a.cycle_time AS "cycleTime",
+		a.cycle_off AS "cycleOff",
+		a.cycle_on AS "cycleOn",
+		a.add_time AS "addTime",
+		a.add_user_id AS "addUserId",
+		a.update_time AS "updateTime",
+		a.update_user_id AS "updateUserId"
+	</sql>
+	
+	<sql id="nodeCollectionCycleJoins">
+	</sql>
+    
+	<select id="get" resultType="NodeCollectionCycle">
+		SELECT 
+			<include refid="nodeCollectionCycleColumns"/>
+		FROM jc_node_collection_cycle a
+		<include refid="nodeCollectionCycleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	<select id="findByNodeId" resultType="NodeCollectionCycle">
+		SELECT
+		<include refid="nodeCollectionCycleColumns"/>
+		FROM jc_node_collection_cycle a
+		<include refid="nodeCollectionCycleJoins"/>
+		WHERE a.node_id = #{nodeId}
+	</select>
+	<select id="findList" resultType="NodeCollectionCycle">
+		SELECT 
+			<include refid="nodeCollectionCycleColumns"/>
+		FROM jc_node_collection_cycle a
+		<include refid="nodeCollectionCycleJoins"/>
+		<where>
+			
+			<if test="nodeId != null and nodeId != ''">
+				AND a.node_id = #{nodeId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="NodeCollectionCycle">
+		SELECT 
+			<include refid="nodeCollectionCycleColumns"/>
+		FROM jc_node_collection_cycle a
+		<include refid="nodeCollectionCycleJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_node_collection_cycle(
+			node_id,
+			cycle_time,
+			cycle_off,
+			cycle_on,
+			add_time,
+			add_user_id,
+			update_time,
+			update_user_id
+		) VALUES (
+			#{nodeId},
+			#{cycleTime},
+			#{cycleOff},
+			#{cycleOn},
+			#{addTime},
+			#{addUserId},
+			#{updateTime},
+			#{updateUserId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_node_collection_cycle SET 	
+			node_id = #{nodeId},
+			cycle_time = #{cycleTime},
+			cycle_off = #{cycleOff},
+			cycle_on = #{cycleOn},
+			add_time = #{addTime},
+			add_user_id = #{addUserId},
+			update_time = #{updateTime},
+			update_user_id = #{updateUserId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jc_node_collection_cycle
+		WHERE id = #{id}
+	</update>
+
+	<update id="deleteByNodeId">
+		DELETE FROM jc_node_collection_cycle
+		WHERE node_id = #{nodeId}
+	</update>
+	
+</mapper>

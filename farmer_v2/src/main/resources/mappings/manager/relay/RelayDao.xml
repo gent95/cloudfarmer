@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.relay.dao.RelayDao">
+    
+	<sql id="relayColumns">
+		a.id AS "id",
+		a.relay_num AS "relayNum",
+		a.binding_time AS "bindingTime",
+		a.farmer_id AS "farmer.id",
+		a.log AS "log",
+		a.lat AS "lat",
+		a.area AS "area",
+		a.user_id AS "user.id",
+		a.used_id AS "used.id",
+		a.ip AS "ip",
+		a.power_supply AS "powerSupply",
+		a.ports AS "ports",
+		a.order_num AS "orderNum",
+		a.use_falg AS "useFalg",
+		a.del_flag AS "delFlag",
+		a.add_time AS "addTime",
+		a.add_user_id AS "addUserId",
+		a.update_user_id AS "updateUserId",
+		a.update_time AS "updateTime",
+		u8.name AS "user.name",
+		u.name AS "used.name",
+		f.name AS "farmer.name"
+
+	</sql>
+	
+	<sql id="relayJoins">
+		LEFT JOIN sys_user u8 ON u8.id = a.user_id
+		LEFT  join jc_farmer f on f.id=a.farmer_id
+		LEFT  join sys_user u ON  u.id=a.used_id
+	</sql>
+    
+	<select id="get" resultType="Relay">
+		SELECT 
+			<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		WHERE a.id = #{id} and a.del_flag = 1
+	</select>
+
+
+
+	<select id="findRelayByNum" resultType="Relay">
+		SELECT
+		<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1 and a.relay_num = #{relayNum}
+		</where>
+	</select>
+
+	<select id="findRelayNumByFarmerId" resultType="java.lang.Integer">
+		SELECT
+			count(a.id)
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1 AND a.farmer_id=#{farmer.id}
+		</where>
+	</select>
+	<select id="findFarmerByRelayNum" resultType="java.lang.Integer">
+		SELECT
+		<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1 AND a.relay_num=#{relayNum}
+		</where>
+	</select>
+
+	<select id="getByMac" resultType="Relay">
+		SELECT
+			<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		WHERE a.relay_num = #{serverMac} and a.del_flag = 1
+	</select>
+
+	<select id="findList" resultType="Relay">
+		SELECT
+			<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1
+			<if test="relayNum != null and relayNum != ''">
+				AND a.relay_num = #{relayNum}
+			</if>
+			<if test="farmer!= null and farmer.id!= ''and farmer.id!=null">
+				AND a.farmer_id = #{farmer.id}
+			</if>
+			<if test="area != null and area != ''">
+				AND a.area = #{area}
+			</if>
+			<if test="farmer!=null and farmer.id!=null and farmer.id!=''">
+				AND a.farmer_id =#{farmer.id}
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+				AND a.user_id =#{user.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findListByUser" resultType="Relay">
+		SELECT
+			<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1
+			<if test="relayNum != null and relayNum != ''">
+				AND a.relay_num = #{relayNum}
+			</if>
+			<if test="farmer!= null and farmer.id!= ''and farmer.id!=null">
+				AND a.farmer_id = #{farmer.id}
+			</if>
+			<if test="area != null and area != ''">
+				AND a.area = #{area}
+			</if>
+			<if test="farmer!=null and farmer.id!=null and farmer.id!=''">
+				AND a.farmer_id =#{farmer.id}
+			</if>
+			<if test="user!=null and user.id!=null and user.id!=''">
+				AND a.user_id =#{user.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findAllList" resultType="Relay">
+		SELECT 
+			<include refid="relayColumns"/>
+		FROM jc_relay a
+		<include refid="relayJoins"/>
+		<where>
+			a.del_flag = 1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_relay(
+			relay_num,
+			binding_time,
+			farmer_id,
+			log,
+			lat,
+			area,
+			user_id,
+			used_id,
+			ip,
+			power_supply,
+			ports,
+			order_num,
+			use_falg,
+			del_flag,
+			add_time,
+			add_user_id,
+			update_user_id,
+			update_time
+		) VALUES (
+			#{relayNum},
+			#{bindingTime},
+			#{farmer.id},
+			#{log},
+			#{lat},
+			#{area},
+			#{user.id},
+			#{used.id},
+			#{ip},
+			#{powerSupply},
+			#{ports},
+			#{orderNum},
+			#{useFalg},
+			#{delFlag},
+			#{addTime},
+			#{addUserId},
+			#{updateUserId},
+			#{updateTime}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_relay SET 	
+			relay_num = #{relayNum},
+			binding_time = #{bindingTime},
+			farmer_id = #{farmer.id},
+			used_id=#{used.id},
+			log = #{log},
+			lat = #{lat},
+			area = #{area},
+			user_id = #{user.id},
+			ip = #{ip},
+			power_supply = #{powerSupply},
+			ports = #{ports}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE jc_relay SET 
+			del_flag = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

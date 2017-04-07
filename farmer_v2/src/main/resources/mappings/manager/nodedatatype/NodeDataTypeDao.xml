@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.nodedatatype.dao.NodeDataTypeDao">
+    
+	<sql id="nodeDataTypeColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.use_flag AS "useFlag",
+		a.del_falg AS "delFalg",
+		a.add_time AS "addTime",
+		a.add_user_id AS "addUserId",
+		a.update_time AS "updateTime",
+		a.update_user_id AS "updateUserId"
+	</sql>
+	
+	<sql id="nodeDataTypeJoins">
+	</sql>
+    
+	<select id="get" resultType="NodeDataType">
+		SELECT 
+			<include refid="nodeDataTypeColumns"/>
+		FROM jc_node_data_type a
+		<include refid="nodeDataTypeJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="NodeDataType">
+		SELECT 
+			<include refid="nodeDataTypeColumns"/>
+		FROM jc_node_data_type a
+		<include refid="nodeDataTypeJoins"/>
+		<where>
+			
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="NodeDataType">
+		SELECT 
+			<include refid="nodeDataTypeColumns"/>
+		FROM jc_node_data_type a
+		<include refid="nodeDataTypeJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_node_data_type(
+			name,
+			use_flag,
+			del_falg,
+			add_time,
+			add_user_id,
+			update_time,
+			update_user_id
+		) VALUES (
+			#{name},
+			#{useFlag},
+			#{delFalg},
+			#{addTime},
+			#{addUserId},
+			#{updateTime},
+			#{updateUserId}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_node_data_type SET 	
+			name = #{name},
+			use_flag = #{useFlag},
+			del_falg = #{delFalg},
+			add_time = #{addTime},
+			add_user_id = #{addUserId},
+			update_time = #{updateTime},
+			update_user_id = #{updateUserId}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jc_node_data_type
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

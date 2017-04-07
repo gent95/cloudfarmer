@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jctl.cloud.manager.waring.dao.WaringCycleDao">
+    
+	<sql id="waringCycleColumns">
+		a.id AS "id",
+		a.node_num AS "nodeNum",
+		a.property AS "property",
+		a.max AS "max",
+		a.min AS "min",
+		a.cycle AS "cycle",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate"
+	</sql>
+	
+	<sql id="waringCycleJoins">
+	</sql>
+    
+	<select id="get" resultType="WaringCycle">
+		SELECT 
+			<include refid="waringCycleColumns"/>
+		FROM jc_waring_cycle a
+		<include refid="waringCycleJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="WaringCycle">
+		SELECT 
+			<include refid="waringCycleColumns"/>
+		FROM jc_waring_cycle a
+		<include refid="waringCycleJoins"/>
+		<where>
+			
+			<if test="nodeNum != null and nodeNum != ''">
+				AND a.node_num = #{nodeNum}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="WaringCycle">
+		SELECT 
+			<include refid="waringCycleColumns"/>
+		FROM jc_waring_cycle a
+		<include refid="waringCycleJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO jc_waring_cycle(
+			node_num,
+			property,
+			max,
+			min,
+			cycle,
+			create_by,
+			create_date,
+			update_by,
+			update_date
+		) VALUES (
+			#{nodeNum},
+			#{property},
+			#{max},
+			#{min},
+			#{cycle},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE jc_waring_cycle SET 	
+			node_num = #{nodeNum},
+			property = #{property},
+			max = #{max},
+			min = #{min},
+			cycle = #{cycle}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM jc_waring_cycle
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
