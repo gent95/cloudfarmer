@@ -5,6 +5,7 @@ package com.jctl.cloud.manager.message.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,12 @@ import com.jctl.cloud.manager.message.dao.WaringMessageDao;
 @Transactional(readOnly = true)
 public class WaringMessageService extends CrudService<WaringMessageDao, WaringMessage> {
 
+	@Autowired
+	private WaringMessageDao waringMessageDao;
+
+	public List<WaringMessage> findAllMessage(WaringMessage waringMessage){
+	return  waringMessageDao.findAllMessage(waringMessage);
+	}
 	public WaringMessage get(String id) {
 		return super.get(id);
 	}

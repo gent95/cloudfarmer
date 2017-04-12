@@ -4,81 +4,353 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 @font-face {
-	font-family: pingfang-regular;
-	src: url('/static/font/pingfangregular.otf');
+    font-family: pingfang-regular;
+    src: url('/static/font/pingfangregular.otf');
 }
-html,body { background: url(/static/images/homePage/tu-1.png);font-family: pingfang-regular;}
-img {max-width:auto;} h1 {font-size:30px;} h1, h2, h3, h4, h5, h6 {margin:0;} a {outline: none;} a:active {star:expression(this.onFocus=this.blur());}
-body,label,input,button,select,textarea,.uneditable-input,.navbar-search .search-query {font-family:pingfang-regular;font-size:13px;_font-size:12px;}
-.input-append .add-on,.input-prepend .add-on,.input-append .btn,.input-prepend .btn,.input-append .btn-group > .dropdown-toggle,.input-prepend .btn-group > .dropdown-toggle {vertical-align: middle;}
-label {display:inline-block;margin-bottom:0;} input[type="radio"],input[type="checkbox"] {margin:-2px 3px;*margin-top:1px; height: 20px; width: 20px;}
-input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {background-color: rgba(0,0,0,0);}
-.input-prepend input,.input-append input,.input-prepend select,.input-append select,.input-prepend .uneditable-input,.input-append .uneditable-input {position:static;}
-legend {margin:10px 0;*left:-7px;*position:relative;color:#0088CC;*width:99.5%}
 
-.collapse {*display:none;_position:static;} .collapse.in {*display:block;}
+html, body {
+    position:absolute;
+    top:0;
+    left:0;
+    height: 100%;
+    width: 100%;
+    background-image: url(/static/images/homePage/tu-1.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-family: pingfang-regular;
+    background-position: center 0;
+    background-size: cover;
+    -webkit-background-size: cover;/* 兼容Webkit内核浏览器如Chrome和Safari */
+    -o-background-size: cover;/* 兼容Opera */
+    zoom: 1;
+}
 
-a.btn, button.btn {*padding:4px 10px 4px;*border:1px solid #cccccc;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e6e6e6', GradientType=0);}
-a.btn-primary,a.btn-primary:hover,a.btn-warning,a.btn-warning:hover,a.btn-danger,a.btn-danger:hover,a.btn-success,a.btn-success:hover,
-	a.btn-info,a.btn-info:hover,a.btn-inverse,a.btn-inverse:hover {*padding:4px 10px 3px;}
-button.btn{*padding:3px 10px 2px;*background-color:transparent;}
-.btn-group a.btn,.btn-group button.btn,.btn-group button.btn:hover {position:static;}
-.btn-group a.btn + a.btn,.btn-group button.btn + button.btn {margin-left:-2px;}
+img {
+    max-width: auto;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+a {
+    outline: none;
+}
+
+a:active {
+    star: expression(this.onFocus=this.blur());
+}
+
+body, label, input, button, select, textarea, .uneditable-input, .navbar-search .search-query {
+    font-family: pingfang-regular;
+    font-size: 13px;
+    _font-size: 12px;
+}
+
+.input-append .add-on, .input-prepend .add-on, .input-append .btn, .input-prepend .btn, .input-append .btn-group > .dropdown-toggle, .input-prepend .btn-group > .dropdown-toggle {
+    vertical-align: middle;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0;
+}
+
+input[type="radio"], input[type="checkbox"] {
+    margin: -2px 3px;
+    *margin-top: 1px;
+    height: 20px;
+    width: 20px;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.input-prepend input, .input-append input, .input-prepend select, .input-append select, .input-prepend .uneditable-input, .input-append .uneditable-input {
+    position: static;
+}
+
+legend {
+    margin: 10px 0;
+    *left: -7px;
+    *position: relative;
+    color: #0088CC;
+    *width: 99.5%
+}
+
+.collapse {
+    *display: none;
+    _position: static;
+}
+
+.collapse.in {
+    *display: block;
+}
+
+a.btn, button.btn {
+    *padding: 4px 10px 4px;
+    *border: 1px solid #cccccc;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e6e6e6', GradientType=0);
+}
+
+a.btn-primary, a.btn-primary:hover, a.btn-warning, a.btn-warning:hover, a.btn-danger, a.btn-danger:hover, a.btn-success, a.btn-success:hover,
+a.btn-info, a.btn-info:hover, a.btn-inverse, a.btn-inverse:hover {
+    *padding: 4px 10px 3px;
+}
+
+button.btn {
+    *padding: 3px 10px 2px;
+    *background-color: transparent;
+}
+
+.btn-group a.btn, .btn-group button.btn, .btn-group button.btn:hover {
+    position: static;
+}
+
+.btn-group a.btn + a.btn, .btn-group button.btn + button.btn {
+    margin-left: -2px;
+}
+
 /*
 input.btn {filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#cccccc', GradientType=0);*color:#555555}
 input.btn:hover {*color:#333333}
 */
-.nav, .breadcrumb {margin-bottom:8px;}
-.nav-list li a {margin-top:5px;margin-bottom:5px;_padding-top:6px;} .nav-list li a i{_margin-top:-1px;}
-
-.table {margin-bottom:8px; background-color: rgba(0, 0, 0, 0); color: white; border-radius: 15px; text-align: center; width: 98%;margin-left: 1%;}
-.table th, .table td {vertical-align:middle;}
-.table td i{margin:0 2px;}
-.table-striped tbody>tr:nth-child(odd)>td, .table-striped tbody>tr:nth-child(odd)>th{background-color: rgba(0, 0, 0, 0);}
-.table-nowrap td {width:200px;max-width:175px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
-.bodyDiv{
-	background: rgba(0,0,0,0.30);
-	height: 100%;
+.nav, .breadcrumb {
+    margin-bottom: 8px;
 }
-.sort-column{color:#0663A2;cursor:pointer;}
 
-.supcan {border:1px #d3d3d3 solid;height:300px;}
+.nav-list li a {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    _padding-top: 6px;
+}
 
-.control-group {padding-bottom:8px;margin-bottom:0;} legend + .control-group {margin-top:8px;}
-.controls .lbl {display:inline-block;padding-top:5px;margin-bottom:0;vertical-align:middle;}
-.measure-input {background:url("../images/ruler.gif") repeat-x scroll 0 bottom transparent;}
-.input-min{width:30px;} .input-mini{width:90px;} .input-small{width:120px;}.input-xxlarge {width:460px;}
-.help-block,.help-inline {color:#aaaaaa;} .alert {margin-bottom:10px;}
+.nav-list li a i {
+    _margin-top: -1px;
+}
 
-.form-search label{margin-left:10px;}
-.form-search span label{margin-left:0;}
-.form-search .ul-form {margin:0;overflow:hidden;}
-.form-search .ul-form li{float:left;list-style:none;height:35px;line-height:35px;}
-.form-search .ul-form li label{width:80px;text-align:right; color: white;}
-.form-search .ul-form li span label{width:auto;}
-.form-search .ul-form li.clearfix{float:none;}
-.form-search .ul-form li.btns{padding-left:10px;}
-.form-search .ul-form li.btns .btn{margin-right:5px;}
+.table {
+    margin-bottom: 8px;
+    background-color: rgba(0, 0, 0, 0);
+    color: white;
+    border-radius: 15px;
+    text-align: center;
+    width: 98%;
+    margin-left: 1%;
+}
 
-.form-horizontal {margin:0 10px;} .form-horizontal .control-group {margin-bottom:20px;}
-.form-horizontal .control-label {padding-top:3px; color: white;font-size: 16px;}
-.form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
-.form-horizontal .controls label.error {background-position:0 2px;}
+.table th, .table td {
+    vertical-align: middle;
+}
 
-.form-horizontal .table-form{width:100%;border-color:#dddddd;}
-.form-horizontal .table-form, .form-horizontal .table-form td{border:1px solid #ddd;background-color:#fdfdfd;padding:4px;} 
-.form-horizontal .table-form td.tit{background:#fafafa;text-align:center;padding-right:8px;white-space:nowrap;}
-.form-horizontal .form-actions{margin-bottom:0;}
+.table td i {
+    margin: 0 2px;
+}
 
-.form-horizontal fieldset .row-fluid {margin-bottom:10px;}
+.table-striped tbody > tr:nth-child(odd) > td, .table-striped tbody > tr:nth-child(odd) > th {
+    background-color: rgba(0, 0, 0, 0);
+}
 
-.pagination {margin:8px 0;} .pagination .controls a{border:0;}
-.pagination .controls input{border:0;color:white;width:30px;padding:0;margin:-3px 0 0 0;text-align:center;}
+.table-nowrap td {
+    width: 200px;
+    max-width: 175px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
-.modal-backdrop {background-color:#ffffff;}
-.modal-backdrop,.modal-backdrop.fade.in {opacity:0.5;filter:alpha(opacity=50);}
-.modal.tree {width:300px;margin:-250px 0 0 -180px;*margin:-200px 0 0 -150px;}
-.modal.tree .modal-body {height:260px;padding:20px 25px;}
+.bodyDiv {
+    background: rgba(0, 0, 0, 0.30);
+    height: 100%;
+}
+
+.sort-column {
+    color: #0663A2;
+    cursor: pointer;
+}
+
+.supcan {
+    border: 1px #d3d3d3 solid;
+    height: 300px;
+}
+
+.control-group {
+    padding-bottom: 8px;
+    margin-bottom: 0;
+}
+
+legend + .control-group {
+    margin-top: 8px;
+}
+
+.controls .lbl {
+    display: inline-block;
+    padding-top: 5px;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.measure-input {
+    background: url("../images/ruler.gif") repeat-x scroll 0 bottom transparent;
+}
+
+.input-min {
+    width: 30px;
+}
+
+.input-mini {
+    width: 90px;
+}
+
+.input-small {
+    width: 120px;
+}
+
+.input-xxlarge {
+    width: 460px;
+}
+
+.help-block, .help-inline {
+    color: #aaaaaa;
+}
+
+.alert {
+    margin-bottom: 10px;
+}
+
+.form-search label {
+    margin-left: 10px;
+}
+
+.form-search span label {
+    margin-left: 0;
+}
+
+.form-search .ul-form {
+    margin: 0;
+    overflow: hidden;
+}
+
+.form-search .ul-form li {
+    float: left;
+    list-style: none;
+    height: 35px;
+    line-height: 35px;
+}
+
+.form-search .ul-form li label {
+    width: 80px;
+    text-align: right;
+    color: white;
+}
+
+.form-search .ul-form li span label {
+    width: auto;
+}
+
+.form-search .ul-form li.clearfix {
+    float: none;
+}
+
+.form-search .ul-form li.btns {
+    padding-left: 10px;
+}
+
+.form-search .ul-form li.btns .btn {
+    margin-right: 5px;
+}
+
+.form-horizontal {
+    margin: 0 10px;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 20px;
+}
+
+.form-horizontal .control-label {
+    padding-top: 3px;
+    color: white;
+    font-size: 16px;
+}
+
+.form-horizontal .controls {
+    text-align: left;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.form-horizontal .controls label.error {
+    background-position: 0 2px;
+}
+
+.form-horizontal .table-form {
+    width: 100%;
+    border-color: #dddddd;
+}
+
+.form-horizontal .table-form, .form-horizontal .table-form td {
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    padding: 4px;
+}
+
+.form-horizontal .table-form td.tit {
+    background: #fafafa;
+    text-align: center;
+    padding-right: 8px;
+    white-space: nowrap;
+}
+
+.form-horizontal .form-actions {
+    margin-bottom: 0;
+}
+
+.form-horizontal fieldset .row-fluid {
+    margin-bottom: 10px;
+}
+
+.pagination {
+    margin: 8px 0;
+}
+
+.pagination .controls a {
+    border: 0;
+}
+
+.pagination .controls input {
+    border: 0;
+    color: white;
+    width: 30px;
+    padding: 0;
+    margin: -3px 0 0 0;
+    text-align: center;
+}
+
+.modal-backdrop {
+    background-color: #ffffff;
+}
+
+.modal-backdrop, .modal-backdrop.fade.in {
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+}
+
+.modal.tree {
+    width: 300px;
+    margin: -250px 0 0 -180px;
+    *margin: -200px 0 0 -150px;
+}
+
+.modal.tree .modal-body {
+    height: 260px;
+    padding: 20px 25px;
+}
 
 /*.accordion-heading,.table th {white-space:nowrap;background-color:#f5f5f5;
 	background-image:-moz-linear-gradient(top,#ffffff,#f5f5f5);background-image:-ms-linear-gradient(top,#ffffff,#f5f5f5);
@@ -87,13 +359,45 @@ input.btn:hover {*color:#333333}
 	background-repeat:repeat-x;}*/
 /*.accordion-heading {filter:progid:dximagetransform.microsoft.gradient(startColorstr='#fefefe', endColorstr='#f5f5f5', GradientType=0);
 	float:inherit;width:100%;-webkit-border-radius:3px 3px 0 0;-moz-border-radius:3px 3px 0 0;border-radius:3px 3px 0 0; background-color: red;}*/
-.accordion-heading a:hover,.dropdown a:hover {text-decoration:none;background:none;}
-/*.accordion-heading .accordion-toggle {font-family:"microsoft yahei";font-size:14px;_padding-top:10px;_padding-bottom:8px; color: #000000;}*/
-.accordion-heading .accordion-toggle i {_margin-top:-1px;}
-.accordion-inner {padding:3px 8px 3px 8px;}
-.accordion-inner .nav-list {margin-bottom:4px; margin-left: 20px;}
-.accordion-inner .nav-list li a {padding:3px 0px 3px 8px;}
+.accordion-heading a:hover, .dropdown a:hover {
+    text-decoration: none;
+    background: none;
+}
 
-#left,#right,#openClose {float:left;} #openClose {width:6px;margin:0 1px;cursor:pointer;}
-#openClose,#openClose.close {background:#efefef url("../images/openclose.png") no-repeat -29px center;}
-#openClose.close {background-position:1px center;opacity:0.5;filter:alpha(opacity=50)}
+/*.accordion-heading .accordion-toggle {font-family:"microsoft yahei";font-size:14px;_padding-top:10px;_padding-bottom:8px; color: #000000;}*/
+.accordion-heading .accordion-toggle i {
+    _margin-top: -1px;
+}
+
+.accordion-inner {
+    padding: 3px 8px 3px 8px;
+}
+
+.accordion-inner .nav-list {
+    margin-bottom: 4px;
+    margin-left: 20px;
+}
+
+.accordion-inner .nav-list li a {
+    padding: 3px 0px 3px 8px;
+}
+
+#left, #right, #openClose {
+    float: left;
+}
+
+#openClose {
+    width: 6px;
+    margin: 0 1px;
+    cursor: pointer;
+}
+
+#openClose, #openClose.close {
+    background: #efefef url("../images/openclose.png") no-repeat -29px center;
+}
+
+#openClose.close {
+    background-position: 1px center;
+    opacity: 0.5;
+    filter: alpha(opacity=50)
+}

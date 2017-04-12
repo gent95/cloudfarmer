@@ -13,6 +13,7 @@ import org.apache.mina.filter.codec.textline.TextLineCodecFactory;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.mina.util.CopyOnWriteMap;
 import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
@@ -44,7 +45,7 @@ public class MinaLongConnServer {
 
     public static Map<Integer, IoSessionEntity> sessionMapBackups;//在内存中备份的 永不清除的
 
-    public static Map<Integer,IoSessionEntity> hashCodeMap;//依据连接信息保存的hashcode
+    public static Map<Integer, IoSessionEntity> hashCodeMap;//依据连接信息保存的hashcode
 
 
     private String serverPort = Global.getConfig("serverPort");
@@ -55,7 +56,7 @@ public class MinaLongConnServer {
         acceptor.getSessionConfig().setReadBufferSize(2048);
         acceptor.getSessionConfig().setIdleTime(IdleStatus.READER_IDLE, IDELTIMEOUT);
         acceptor.getFilterChain().addLast("codec",
-                new ProtocolCodecFilter( new TextLineCodecFactory(
+                new ProtocolCodecFilter(new TextLineCodecFactory(
                         Charset.forName("UTF-8"),
                         "\r\n",
                         "\r\n")));
@@ -64,11 +65,13 @@ public class MinaLongConnServer {
         acceptor.setHandler(new MinaLongConnServerHandler());
         try {
             //增加缓存数据
-            sessionMapBackups= new HashMap<>(100);
-            hashCodeMap= new HashMap<>(100);
+            sessionMapBackups = new HashMap<>(100);
+            hashCodeMap = new HashMap<>(100);
             sessionMap = new HashMap<>(100);
+
+
             acceptor.bind(new InetSocketAddress(Integer.valueOf(serverPort)));
-            log.info("监听服务器已经启动，当前监听端口为 "+serverPort);
+            log.info("监听服务器已经启动，当前监听端口为 " + serverPort);
         } catch (Exception e) {
             log.info("监听服务器启动失败");
             e.printStackTrace();

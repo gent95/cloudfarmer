@@ -4,9 +4,12 @@
 <head>
 	<title>农场管理</title>
 	<meta name="decorator" content="default"/>
+	<meta name="referrer" content="always">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<script type="text/javascript">
-		$(document).ready(function() {
-			
+        $(document).ready(function() {
+
+
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -37,7 +40,7 @@
 	</form:form>
 	<sys:message content="${message}"/>
 	<div class="bodyDiv">
-	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+	<table lign="center" id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
 

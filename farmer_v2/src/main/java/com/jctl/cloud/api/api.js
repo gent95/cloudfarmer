@@ -200,9 +200,9 @@ or
  }
  */
 /**
- * @api {post}  /farmer/save    农场添加接口
- * @apiName 农场添加接口
- * @apiGroup save
+ * @api {post}  /farmer/saveOrUpdate    农场添加修改接口
+ * @apiName 农场添加修改接口
+ * @apiGroup saveOrUpdate
  * @apiParam  farmer
  * @apiSuccess {String} flag 状态1表示成功，0表示失败.
  * @apiSuccess {String} msg  失败原因说明
@@ -243,23 +243,23 @@ or
  *      }]"
  *  }
  */
-/**
- * @api {post}  /farmer/update    农场修改接口
- * @apiName 农场修改接口
- * @apiGroup update
- * @apiParam  farmer
- * @apiSuccess {String} flag 状态1表示成功，0表示失败.
- * @apiSuccess {String} msg  失败原因说明
- * @apiSuccessExample Success-Response:
- * {
- *  "flag":"0",
- *  "msg":"修改失败"
- * }
- * or{
- *  "flag":"1",
- *  "msg":"修改成功"
- *  }
- */
+// /**
+//  * @api {post}  /farmer/update    农场修改接口
+//  * @apiName 农场修改接口
+//  * @apiGroup update
+//  * @apiParam  farmer
+//  * @apiSuccess {String} flag 状态1表示成功，0表示失败.
+//  * @apiSuccess {String} msg  失败原因说明
+//  * @apiSuccessExample Success-Response:
+//  * {
+//  *  "flag":"0",
+//  *  "msg":"修改失败"
+//  * }
+//  * or{
+//  *  "flag":"1",
+//  *  "msg":"修改成功"
+//  *  }
+//  */
 /**
  * @api {post}  /farmer/delete  农场删除接口
  * @apiName 农场删除接口

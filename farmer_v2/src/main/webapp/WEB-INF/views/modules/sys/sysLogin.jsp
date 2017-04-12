@@ -29,8 +29,7 @@
 <!--[if lte IE 6]><br/><div class='alert alert-block' style="text-align:left;padding-bottom:10px;"><a class="close" data-dismiss="alert">x</a><h4>温馨提示：</h4><p>你使用的浏览器版本过低。为了获得更好的浏览体验，我们强烈建议您 <a href="http://browsehappy.com" target="_blank">升级</a> 到最新版本的IE浏览器，或者使用较新版本的 Chrome、Firefox、Safari 等。</p></div><![endif]-->
 <div class="header">
 	<div class="he_left">
-		<img src="${ctxStatic}/images/login/zu-4.png"/>
-		<img src="${ctxStatic}/images/login/Intelligen.png"/>
+		<img src="${ctxStatic}/images/no-3.png"/>
 	</div>
 	<div class="he_rigth"><a href="${adminPath}">登录</a> | <a href="${ctx}/reg/optionRole">注册</a></div>
 </div>

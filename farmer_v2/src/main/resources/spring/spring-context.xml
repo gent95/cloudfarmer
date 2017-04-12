@@ -18,7 +18,7 @@
 
     <context:annotation-config/>
     <!--spring扫描注解的配置   -->
-    <context:component-scan base-package="com"/>
+    <context:component-scan base-package="com.jctl.cloud"/>
     <!-- 加载应用属性实例，可通过  @Value("#{config['jdbc.driver']}") String jdbcDriver 方式引用 -->
     <util:properties id="config" location="classpath:jdbc.properties" local-override="true"/>
 
@@ -71,6 +71,8 @@
     <task:executor id="executor" pool-size="10"/>
     <task:scheduler id="scheduler" pool-size="10"/>
     <task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
+
+
 
     <!-- 数据源配置, 使用 BoneCP 数据库连接池 -->
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">

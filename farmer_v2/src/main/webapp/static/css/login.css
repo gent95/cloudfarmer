@@ -3,11 +3,20 @@
 	src: url('/static/font/pingfangregular.otf');
 }
 .body{
-	background: url(/static/images/login/juxing-1.png);
-	color: #FFFFFF;
-	margin: 0px;
-	padding: 0px;
+	position:absolute;
+	top:0;
+	left:0;
+	height: 100%;
+	width: 100%;
+	background-image: url(/static/images/homePage/tu-1.png);
+	background-attachment: fixed;
+	background-repeat: no-repeat;
 	font-family: pingfang-regular;
+	background-position: center 0;
+	background-size: cover;
+	-webkit-background-size: cover;/* 兼容Webkit内核浏览器如Chrome和Safari */
+	-o-background-size: cover;/* 兼容Opera */
+	zoom: 1;
 }
 a{
 	text-decoration: none;

@@ -149,8 +149,7 @@
 	<body class="body">
 		<div class="header">
 			<div class="he_left">
-				<img src="${ctxStatic}/images/login/zu-4.png"/>
-				<img src="${ctxStatic}/images/login/Intelligen.png"/>
+				<img src="${ctxStatic}/images/no-3.png"/>
 			</div>
 			<div class="he_rigth"><a href="${ctx}">登录</a> | <a href="${ctx}/reg/optionRole">注册</a></div>
 		</div>

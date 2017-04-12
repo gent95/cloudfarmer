@@ -45,6 +45,8 @@ public class User extends DataEntity<User> {
 	private String loginFlag;	// 是否允许登陆
 	private String photo;	// 头像
 
+
+	private String channelId;//手机登录标识
 	private String oldLoginName;// 原登录名
 	private String newPassword;	// 新密码
 	
@@ -329,5 +331,13 @@ public class User extends DataEntity<User> {
 	@Override
 	public String toString() {
 		return id;
+	}
+
+	public String getChannelId() {
+		return channelId;
+	}
+
+	public void setChannelId(String channelId) {
+		this.channelId = channelId;
 	}
 }

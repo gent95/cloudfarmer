@@ -6,6 +6,8 @@
 <head>
     <title>${fns:getConfig('productName')}</title>
     <meta name="decorator" content="blank"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <c:set var="tabmode" value="${empty cookie.tabmode.value ? '0' : cookie.tabmode.value}"/>
     <c:if test="${tabmode eq '1'}">
         <link rel="Stylesheet" href="${ctxStatic}/jerichotab/css/jquery.jerichotab.css"/>
@@ -62,6 +64,9 @@
         }
     </style>
     <script type="text/javascript">
+
+
+
         $(document).ready(function () {
             dispTime();
 
@@ -320,14 +325,14 @@
     </script>
     <div class="container-fluid">
         <div id="content" class="row-fluid">
-            <div id="left" style="background: url(/static/images/homePage/tu-2.png) no-repeat">
+            <div  id="left" >
             </div>
-            <div id="right">
+            <div  id="right">
                 <iframe id="mainFrame" name="mainFrame" src="" style="overflow:visible;" scrolling="yes"
                         frameborder="no" width="100%"></iframe>
             </div>
         </div>
-        <div id="footer" class="row-fluid">
+      <div  id="footer" class="row-fluid">
             Copyright &copy;${fns:getConfig('productName')}
         </div>
 
@@ -347,7 +352,7 @@
             "overflow-y": strs[0] < minHeight ? "auto" : "hidden"
         });
         mainObj.css("width", strs[1] < minWidth ? minWidth - 10 : "auto");
-        frameObj.height((strs[0] < minHeight ? minHeight : strs[0]) - headerObj.height() - (strs[1] < minWidth ? 42 : 28) + 28);
+        frameObj.height((strs[0] < minHeight ? minHeight : strs[0]) - headerObj.height() - (strs[1] < minWidth ? 42 : 28));
         $("#openClose").height($("#openClose").height());// <c:if test="${tabmode eq '1'}">
         $(".jericho_tab iframe").height($("#right").height() - tabTitleHeight); // </c:if>
         wSizeWidth();
@@ -355,9 +360,9 @@
     function wSizeWidth() {
         if (!$("#openClose").is(":hidden")) {
             var leftWidth = ($("#left").width() < 0 ? 0 : $("#left").width());
-            $("#right").width($("#content").width() - leftWidth - $("#openClose").width());
+           $("#right").width($("#content").width() - leftWidth-5);
         } else {
-            $("#right").width("100%");
+            $("#right").width("auto");
         }
     }// <c:if test="${tabmode eq '1'}">
     function openCloseClickCallBack(b) {

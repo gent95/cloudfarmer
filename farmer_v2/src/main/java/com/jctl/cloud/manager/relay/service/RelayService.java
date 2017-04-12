@@ -6,7 +6,10 @@ package com.jctl.cloud.manager.relay.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.jctl.cloud.common.utils.Reflections;
 import com.jctl.cloud.manager.farmer.service.FarmerService;
 import com.jctl.cloud.manager.message.entity.WaringMessage;
 import com.jctl.cloud.manager.message.service.WaringMessageService;
@@ -21,6 +24,11 @@ import com.jctl.cloud.mina.entity.DataResultSet;
 import com.jctl.cloud.mina.entity.GatewayResultSet;
 import com.jctl.cloud.mina.entity.OpenCloseVO;
 import com.jctl.cloud.mina.entity.ResultSet;
+import com.jctl.cloud.modules.sys.entity.Role;
+import com.jctl.cloud.modules.sys.entity.User;
+import com.jctl.cloud.modules.sys.service.SystemService;
+import com.jctl.cloud.modules.sys.utils.UserUtils;
+import com.jctl.cloud.utils.baidupush.PushMsgToSingleDevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +64,8 @@ public class RelayService extends CrudService<RelayDao, Relay> {
     private NodeDataDetailsService nodeDataDetailsService;
     @Autowired
     private FarmerService farmerService;
+    @Autowired
+    private SystemService systemService;
 
 
     private final String message_code = "尊敬的用户您好，当前检测到设备";
@@ -212,6 +222,19 @@ public class RelayService extends CrudService<RelayDao, Relay> {
         WaringCycle search = new WaringCycle();
         search.setNodeNum(nodeData.getNodeMac());
         List<WaringCycle> list = waringCycleService.findList(search);
+        User user=null;
+        String[] proper=new String[]{"nodeNum","message"};
+        WaringMessage waringMessage=new WaringMessage();
+        if(nodeData.getNodeMac()!=null&&nodeData.getNodeMac()!=""){
+            Node node=nodeService.getByNodeNum(nodeData.getNodeMac());
+            if(node.getUsedId()!=null&&node.getUsedId()!=""){
+                user=systemService.getUser(node.getUsedId());
+            }else {
+                if (node.getUser() != null) {
+                    user = systemService.getUser(node.getUser().getId());
+                }
+            }
+        }
         if (list != null && list.size() > 0) {
             for (WaringCycle waringCycle : list) {
                 try {
@@ -219,8 +242,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("airTemperature")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "大气温度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "大气温度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -228,8 +273,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("airHumidity")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "大气湿度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "大气湿度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -238,8 +305,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilHumidity1")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "1号菌棒温度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "1号菌棒温度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -248,8 +337,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilTemperature1")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "1号菌棒湿度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "1号菌棒湿度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -257,8 +368,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilHumidity2")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "2号菌棒温度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "2号菌棒温度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -266,8 +399,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilTemperature2")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "2号菌棒湿度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "2号菌棒湿度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -275,8 +430,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilHumidity3")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "大气湿度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "大气湿度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -284,8 +461,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("soilTemperature3")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "3号菌棒湿度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "3号菌棒湿度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }
@@ -293,8 +492,30 @@ public class RelayService extends CrudService<RelayDao, Relay> {
                     if (waringCycle.getProperty().equals("co2")) {
                         if (nodeData.getAirTemperature() > waringCycle.getMax()) {
                             waringMessageService.save(getWaringMessage(nodeData, "二氧化碳浓度", 1));
+                            if(user!=null) {
+                                waringMessage.setNodeNum(nodeData.getNodeMac());
+                                WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                Map maps= Maps.newHashMap();
+                                List lists=new ArrayList();
+                                for(String property:proper){
+                                    maps.put(property, Reflections.invokeGetter(ms,property));
+                                }
+                                lists.add(maps);
+                                PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                            }
                             if (nodeData.getAirTemperature() < waringCycle.getMin()) {
                                 waringMessageService.save(getWaringMessage(nodeData, "二氧化碳浓度", 0));
+                                if(user!=null) {
+                                    waringMessage.setNodeNum(nodeData.getNodeMac());
+                                    WaringMessage ms=waringMessageService.findList(waringMessage).get(0);
+                                    Map maps= Maps.newHashMap();
+                                    List lists=new ArrayList();
+                                    for(String property:proper){
+                                        maps.put(property, Reflections.invokeGetter(ms,property));
+                                    }
+                                    lists.add(maps);
+                                    PushMsgToSingleDevice.push(lists.toString(), user.getChannelId());
+                                }
                             }
                         }
                     }

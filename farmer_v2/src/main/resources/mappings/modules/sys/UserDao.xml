@@ -62,6 +62,7 @@
         a.id,
         a.company_id AS "company.id",
         a.office_id AS "office.id",
+        a.channel_id AS "channelId",
         a.login_name,
         a.password,
         a.no,
@@ -228,7 +229,8 @@
     <!-- 插入用户 -->
     <insert id="insert">
 		INSERT INTO sys_user(
-		id,
+		    id,
+		    channel_id,
 			company_id, 
 			office_id, 
 			login_name, 
@@ -249,6 +251,7 @@
 			del_flag
 		) VALUES (
 		#{id},
+		#{channelId},
 			#{company.id}, 
 			#{office.id}, 
 			#{loginName}, 
@@ -277,6 +280,7 @@
 		create_date,
 		company_id,
 		office_id,
+		channel_id,
 		login_name,
 		password,
 		name,
@@ -289,6 +293,7 @@
 		#{createDate},
 		#{company.id},
 		#{office.id},
+		#{channelId},
 		#{loginName},
 		#{password},
 		#{name},
@@ -303,7 +308,8 @@
 		UPDATE sys_user SET 
 			company_id = #{company.id}, 
 			office_id = #{office.id}, 
-			login_name = #{loginName}, 
+			login_name = #{loginName},
+			channel_id=#{channelId},
 			password = #{password}, 
 			no = #{no}, 
 			name = #{name}, 
@@ -350,6 +356,7 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			channel_id=#{channelId},
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>
@@ -395,6 +402,7 @@
         a.mobile,
         a.user_type,
         a.login_ip,
+        a.channel_id,
         a.login_date
         FROM sys_user a
         WHERE a.del_flag = #{DEL_FLAG_NORMAL}

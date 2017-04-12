@@ -38,12 +38,15 @@ public class ALoginController {
          if(flag == LoginResult.登录成功){
              result.put("flag",1);
              result.put("userId",FrontUserUtils.getUser().getId());
+             return result;
          }else if(flag == LoginResult.用户被锁定){
              result.put("flag",0);
              result.put("msg","用户被锁定，请联系管理员！");
-         }else if(flag ==LoginResult.登录失败){
+             return result;
+         }else if(flag == LoginResult.登录失败){
              result.put("flag",0);
              result.put("msg","账号或密码错误！");
+             return result;
          }
         } catch (Exception e) {
             result.put("flag",0);

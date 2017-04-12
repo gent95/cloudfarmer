@@ -39,37 +39,35 @@ public class AFarmerController {
         Map result = Maps.newHashMap();
         List list = new ArrayList();
         try {
-                User user = systemService.getUser(userId);
-                if (user != null) {
-                    boolean AdminUser = User.isAdmin(userId);
-                    if (!AdminUser) {
-                        List<Role> rolse = UserUtils.getRoleList();
-                        for (Role ro : rolse) {
-                            if (ro.getEnname().equals("farmerBoss")) {
-                                farmer.setUser(user);
-                            }
+            User user = systemService.getUser(userId);
+            if (user != null) {
+                boolean AdminUser = User.isAdmin(userId);
+                if (!AdminUser) {
+                    List<Role> rolse = UserUtils.getRoleList();
+                    for (Role ro : rolse) {
+                        if (ro.getEnname().equals("farmerBoss")) {
+                            farmer.setUser(user);
                         }
-                    }
-                    farmer.setUser(user);
-                   List<Farmer> lists=farmerService.findList(farmer);
-                    String[] propertys = new String[]{"id", "name", "addr", "farmlandNumber","plantVariety"};
-                    if (lists!= null || lists.size()> 0) {
-                        for (Farmer fa:lists) {
-                            Map map = new HashMap();
-                            for (String property: propertys) {
-                                map.put(property, Reflections.invokeGetter(fa,property));
-                            }
-                            list.add(map);
-                        }
-                        result.put("flag", 1);
-                        result.put("info",list);
-                    }else {
-                        result.put("flag","0");
-                        result.put("msg", "抱歉，没有该农场信息!");
                     }
                 }
-
-
+                farmer.setUser(user);
+                List<Farmer> lists = farmerService.findList(farmer);
+                String[] propertys = new String[]{"id", "name", "addr", "farmlandNumber", "plantVariety"};
+                if (lists != null || lists.size() > 0) {
+                    for (Farmer fa : lists) {
+                        Map map = new HashMap();
+                        for (String property : propertys) {
+                            map.put(property, Reflections.invokeGetter(fa, property));
+                        }
+                        list.add(map);
+                    }
+                    result.put("flag", 1);
+                    result.put("info", list);
+                } else {
+                    result.put("flag", "0");
+                    result.put("msg", "抱歉，没有该农场信息!");
+                }
+            }
         } catch (Exception e) {
             result.put("flag", 0);
             result.put("msg", "操作失败");
@@ -78,14 +76,14 @@ public class AFarmerController {
         return result;
     }
 
-    @RequestMapping("save")
+    @RequestMapping("saveOrUpdate")
     @ResponseBody
-    public Map addFarmer(Farmer farmer, HttpServletRequest request) {
+    public Map saveOrUpdate(Farmer farmer, HttpServletRequest request) {
         Map result = Maps.newHashMap();
         try {
             farmerService.save(farmer);
+            result.put("msg", "操作成功");
             result.put("flag", "1");
-            result.put("msg", "添加成功");
         } catch (Exception e) {
             result.put("flag", "0");
             result.put("msg", "添加失败");
@@ -94,23 +92,23 @@ public class AFarmerController {
         return result;
     }
 
-    @RequestMapping("update")
-    @ResponseBody
-    public Map updateFarmer(Farmer farmer, HttpServletRequest request) {
-        Map result = Maps.newHashMap();
-        try {
-            if (farmer.getId() != null&&farmer.getId()!="") {
-                farmerService.save(farmer);
-                result.put("flag", "1");
-                result.put("msg", "修改成功");
-            }
-        } catch (Exception e) {
-            result.put("flag", "0");
-            result.put("msg", "修改失败");
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    @RequestMapping("update")
+//    @ResponseBody
+//    public Map updateFarmer(Farmer farmer, HttpServletRequest request) {
+//        Map result = Maps.newHashMap();
+//        try {
+//            if (farmer.getId() != null && farmer.getId() != "") {
+//                farmerService.save(farmer);
+//                result.put("flag", "1");
+//                result.put("msg", "修改成功");
+//            }
+//        } catch (Exception e) {
+//            result.put("flag", "0");
+//            result.put("msg", "修改失败");
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     @RequestMapping("delete")
     @ResponseBody
@@ -132,22 +130,24 @@ public class AFarmerController {
     @ResponseBody
     public Map getFarmer(String id, HttpServletRequest request) {
         Map result = Maps.newHashMap();
-        List list=new ArrayList();
+        List list = new ArrayList();
 
         try {
             Farmer farmer = farmerService.get(id);
-            String[] propert=new String[]{"id", "name","farmerNum", "addr","area","plantVariety","user.name","farmlandNumber","relayNumber"};
-            Map maps=Maps.newHashMap();
-            for(String pro:propert){
-                maps.put(pro,Reflections.invokeGetter(farmer,pro));
+            String[] propert = new String[]{"id", "name", "farmerNum", "addr", "area", "plantVariety", "user.name", "farmlandNumber", "relayNumber"};
+            Map maps = Maps.newHashMap();
+            for (String pro : propert) {
+                maps.put(pro, Reflections.invokeGetter(farmer, pro));
             }
             list.add(maps);
             result.put("info", list);
-            result.put("flag","1");
-        }catch (Exception e){
-            result.put("flag","0");
-            result.put("msg","操作失败");
+            result.put("flag", "1");
+        } catch (Exception e) {
+            result.put("flag", "0");
+            result.put("msg", "操作失败");
         }
         return result;
+
+        //感觉凸进来了
     }
 }

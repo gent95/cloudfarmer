@@ -7,6 +7,8 @@ import com.jctl.cloud.common.persistence.CrudDao;
 import com.jctl.cloud.common.persistence.annotation.MyBatisDao;
 import com.jctl.cloud.manager.message.entity.WaringMessage;
 
+import java.util.List;
+
 /**
  * 报警信息DAO接口
  * @author kay
@@ -14,5 +16,5 @@ import com.jctl.cloud.manager.message.entity.WaringMessage;
  */
 @MyBatisDao
 public interface WaringMessageDao extends CrudDao<WaringMessage> {
-	
+	List<WaringMessage> findAllMessage(WaringMessage waringMessage);
 }

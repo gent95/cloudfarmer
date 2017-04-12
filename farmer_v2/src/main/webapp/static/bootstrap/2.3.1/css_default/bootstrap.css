@@ -240,7 +240,7 @@ a {
 
 a:hover,
 a:focus {
-  color: #000000;
+  color: white;
   text-decoration: underline;
 }
 
@@ -2993,7 +2993,7 @@ table th[class*="span"],
 .dropdown-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 25%;
   z-index: 1000;
   display: none;
   float: left;
@@ -4789,7 +4789,6 @@ input[type="submit"].btn.btn-mini {
   font-weight: bolder;
   font-family: pingfang-regular;
   text-decoration: none;
-  text-shadow: 0 1px 0 #ffffff;
 }
 
 .navbar .nav .dropdown-toggle .caret {

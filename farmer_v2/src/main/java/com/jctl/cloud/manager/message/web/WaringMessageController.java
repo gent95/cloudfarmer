@@ -6,6 +6,14 @@ package com.jctl.cloud.manager.message.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jctl.cloud.manager.farmer.service.FarmerService;
+import com.jctl.cloud.manager.farmerland.entity.Farmland;
+import com.jctl.cloud.manager.farmerland.service.FarmlandService;
+import com.jctl.cloud.manager.node.entity.Node;
+import com.jctl.cloud.manager.node.service.NodeService;
+import com.jctl.cloud.modules.sys.entity.Role;
+import com.jctl.cloud.modules.sys.entity.User;
+import com.jctl.cloud.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +30,9 @@ import com.jctl.cloud.common.utils.StringUtils;
 import com.jctl.cloud.manager.message.entity.WaringMessage;
 import com.jctl.cloud.manager.message.service.WaringMessageService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 报警信息Controller
  *
@@ -34,6 +45,8 @@ public class WaringMessageController extends BaseController {
 
     @Autowired
     private WaringMessageService waringMessageService;
+    @Autowired
+    private NodeService nodeService;
 
     @ModelAttribute
     public WaringMessage get(@RequestParam(required = false) String id) {
@@ -51,7 +64,37 @@ public class WaringMessageController extends BaseController {
     @RequestMapping(value = {"list", ""})
     public String list(WaringMessage waringMessage, HttpServletRequest request, HttpServletResponse response, Model model) {
         try {
-            Page<WaringMessage> page = waringMessageService.findPage(new Page<WaringMessage>(request, response), waringMessage);
+       Node node=new Node();
+            Page<WaringMessage> page=new Page<WaringMessage>(request,response);
+            boolean isAdmin= User.isAdmin(UserUtils.getUser().getId());
+        if(!isAdmin){
+                List<Role> roleList=UserUtils.getRoleList();
+                for(Role ro:roleList){
+                    if(ro.getEnname().equals("farmerBoss")){
+                        node.setUser(UserUtils.getUser());
+                    }
+                    if(ro.getEnname().equals("farmerWork")){
+                        node.setUsedId(UserUtils.getUser().getId());
+                    }
+                }
+
+            }
+/*       if(node.getUser()!=null||node.getUsedId()!=null) {
+                List<Node> nodeList = nodeService.findList(node);
+                List<WaringMessage> waringMessages=new ArrayList<WaringMessage>();
+                for (Node no : nodeList) {
+                    waringMessage.setNodeNum(no.getNodeNum());
+                    List<WaringMessage> lists=waringMessageService.findAllMessage(waringMessage);
+                    for(WaringMessage w:lists){
+                        waringMessages.add(w);
+                    }
+                }
+                page.setList(waringMessages);
+                page.setCount(waringMessages.size());
+                page.setPageSize(30);
+                page.setPageNo(1);
+            }*/
+          page = waringMessageService.findPage(new Page<WaringMessage>(request,response), waringMessage);
             model.addAttribute("page", page);
         } catch (Exception e) {
             e.printStackTrace();

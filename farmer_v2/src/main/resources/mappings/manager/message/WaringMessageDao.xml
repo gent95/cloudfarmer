@@ -29,7 +29,7 @@
 		FROM jc_waring_message a
 		<include refid="waringMessageJoins"/>
 		<where>
-			
+			1=1
 			<if test="nodeNum != null and nodeNum != ''">
 				AND a.node_num = #{nodeNum}
 			</if>
@@ -39,29 +39,43 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="WaringMessage">
+	<select id="findAllMessage" resultType="WaringMessage">
 		SELECT 
 			<include refid="waringMessageColumns"/>
 		FROM jc_waring_message a
 		<include refid="waringMessageJoins"/>
 		<where>
-			
-		</where>		
+			1=1
+			<if test="nodeNum != null and nodeNum != ''">
+				AND a.node_num = #{nodeNum}
+			</if>
+		</where>
+				ORDER BY a.create_date DESC
+	</select>
+
+	<select id="findAllList" resultType="WaringMessage">
+		SELECT
+		<include refid="waringMessageColumns"/>
+		FROM jc_waring_message a
+		<include refid="waringMessageJoins"/>
+		<where>
+
+		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO jc_waring_message(
 			node_num,
